@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <time.h>
 
-long int fibonacci_i(int numero)
+long long int fibonacci_i(int numero)
 {
     int f0 = 0, f1 = 1, i;
-    long int fibona;
+    long long int fibona;
 
     if(numero <= 0)
     {
@@ -26,10 +26,10 @@ long int fibonacci_i(int numero)
     }
 }
 
-long int fibonacci_r(int numero)
+long long int fibonacci_r(int numero)
 {
     int f0 = 0, f1 = 1, i;
-    long int fibona;
+    long long int fibona;
 
     if(numero <= 0)
     {
@@ -49,7 +49,7 @@ int main()
 {
     time_t start, end, start_1, end_1;
     int numero;
-    long int fibo_r, fibo_i;
+    long long int fibo_r, fibo_i;
 
     printf("Ingrese un numero: ");
     scanf("%d", &numero);
