@@ -57,7 +57,7 @@ int main()
     start = time(NULL);
     
     fibo_i = fibonacci_i(numero);
-    printf("La serie de fibonacci iterativa de %d es %lu\n", numero, fibo_i);
+    printf("La serie de fibonacci iterativa de %d es %llu\n", numero, fibo_i);
 
     end = time(NULL);
     printf("El tiempo de demora es de %.4f\n", difftime(end, start));
@@ -65,11 +65,10 @@ int main()
     start_1 = time(NULL);
     
     fibo_r = fibonacci_r(numero);
-    printf("La serie de fibonacci recursiva de %d es %lu\n", numero, fibo_r);
+    printf("La serie de fibonacci recursiva de %d es %llu\n", numero, fibo_r);
 
     end_1 = time(NULL);
     printf("El tiempo de demora es de %.4f\n", difftime(end_1, start_1));
 
     return 0;
 }
-
