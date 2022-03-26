@@ -2,7 +2,7 @@
 
 void main()
 {
-    long long int i, j, num1, num2, resultado = 0;
+    long long int i, j, num1, num2, resultado = 0, aux;
 
     scanf("%llu %llu", &num1, &num2);
 
@@ -19,9 +19,10 @@ void main()
         {
             for(j = 1; j < num1; j++)
             {
-                resultado += resultado;
+                resultado += aux;
             }
         }
+        aux = resultado;
     }
 
     printf("%llu", resultado);
