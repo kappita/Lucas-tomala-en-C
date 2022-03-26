@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 long long int potencia_suma(long long int a, long long int b)
 {
     long long int i, j, resultado = 0, aux;
