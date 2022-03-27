@@ -21,6 +21,7 @@ long long int potencia_suma(long long int a, long long int b)
         }
         aux = resultado;
     }
+    return resultado;
 }
 
 void main()

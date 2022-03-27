@@ -6,17 +6,18 @@ void puntero(int *a, int *b)
 
     for(i; i > 0; i--)
     {
-        *b += *a;
+        *a += *b;
     }
 }
 
 void main()
 {
-    int a = 2, b = 6;
+    int c = 0;
+    int *a = &c, b = 6;
 
-    printf("este es a:%d este es b:%d\n", a, b);
+    printf("este es a:%d este es b:%d\n", c, b);
 
-    puntero(&a, &b);
+    puntero(a, &b);
 
-    printf("este es a:%d este es b:%d", a, b);
+    printf("este es a:%d este es b:%d", c, b);
 }
