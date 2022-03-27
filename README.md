@@ -1,2 +1,2 @@
 # Lucas-tomala
-Serie de ejercicios en c realizados con el proposito de entender mejor el programa
+Serie de ejercicios en C realizados con el proposito de entender mejor el lenguaje
