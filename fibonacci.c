@@ -28,7 +28,6 @@ long long int fibonacci_i(int numero)
 
 long long int fibonacci_r(int numero)
 {
-    int f0 = 0, f1 = 1, i;
     long long int fibona;
 
     if(numero <= 0)
