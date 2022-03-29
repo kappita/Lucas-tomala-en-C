@@ -10,14 +10,9 @@ int j;
 
 float promedio(int A[10])
 {
-    float total = 0;
+    float total;
 
-    for(i = 0; i < largo; i++)
-    {
-        total += A[i];
-    }
-    
-    total = total / largo;
+    total = (float)suma(A) / largo;
 
     return total;
 }
@@ -82,7 +77,7 @@ int main()
     }
 
     printf("La suma de los 10 numeros es: %d\n", suma(numeros));
-    printf("El promedio de los 10 numeros es: %0.5f", promedio(numeros));
+    printf("El promedio de los 10 numeros es: %0.5f\n", promedio(numeros));
 
     // Ejercicio 9.6
     int matriz[filas_m][filas_m];
@@ -100,6 +95,4 @@ int main()
     imprimir_matriz(matriz);
 
     printf("El valor de la suma de la matriz sin la diagonal es: %d", suma_matriz(matriz));
-
-    return 0;
 }
