@@ -6,4 +6,4 @@ Los ejercicios que se encuentran en esta carpeta funcionan con entradas por cons
 
     archivos2.exe 3 nombres.txt
   
-el ejercicio2.c no requiere de esta entrada
+el ejercicio2.c no requiere de esta entrada 
