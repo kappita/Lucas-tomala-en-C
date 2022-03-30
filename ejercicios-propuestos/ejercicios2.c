@@ -4,34 +4,61 @@
 int i;
 int j;
 
-// Ejercicio 9.9
+// Ejercicio 9.5
 
-#define largo 10
+#define filas_3 3
+#define columnas_4 4
 
-float promedio(int A[10])
+void leer_filas(int *A)
 {
-    float total;
-
-    total = (float)suma(A) / largo;
-
-    return total;
+    for(i = 0; i < (filas_3); i++)
+    {
+        for(j = 0; j < (columnas_4); j++)
+        {
+            printf("Ingrese el valor %d %d de la matriz: ", i + 1, j + 1);
+            scanf("%d", A);
+            A++;
+        }        
+    }
 }
 
-int suma(int A[10])
+void imprimir_columnas(int A[filas_3][columnas_4])
 {
-    int total_s = 0;
+    printf("La matriz es: \n");
 
-    for(i = 0; i < largo; i++)
+    for(i = 0; i < columnas_4; i++)
     {
-        total_s += A[i];
+        printf("(");
+        for(j = 0; j < filas_3; j++)
+        {
+            if( ((j+1) % filas_3) == 0)
+            {
+                printf("%d)\n", A[j][i]);
+            }
+            else
+            {
+                printf("%d ", A[j][i]);
+            }
+        }
     }
-
-    return total_s;
 }
 
 // Ejercicio 9.6
 
 #define filas_m 4
+
+void generar_matriz(int *A)
+{
+    for(i = 0; i < (filas_m); i++)
+    {
+        for(j = 0; j < (filas_m); j++)
+        {
+            printf("Ingrese el valor %d %d de la matriz: ", i + 1, j + 1);
+            scanf("%d", A);
+            A++;
+        }        
+    }
+}
 
 void imprimir_matriz(int A[filas_m][filas_m])
 {
@@ -42,9 +69,15 @@ void imprimir_matriz(int A[filas_m][filas_m])
         printf("(");
         for(j = 0; j < filas_m; j++)
         {
-            printf("%d ", A[i][j]);
+            if( ((j+1) % filas_m) == 0)
+            {
+                printf("%d)\n", A[i][j]);
+            }
+            else
+            {
+                printf("%d ", A[i][j]);
+            }
         }
-        printf(")\n");
     }
 }
 
@@ -68,31 +101,19 @@ int suma_matriz(int A[filas_m][filas_m])
 
 int main()
 {
-    // Ejercicio 9.9
-    int numeros[10];
-       for(i = 0; i < largo; i++)
-    {   
-        printf("Ingrese el numero %d: ", i+1);
-        scanf("%d", &numeros[i]);
-    }
+    // Ejercicio 9.5
+    int matriz_1[filas_3][columnas_4];
 
-    printf("La suma de los 10 numeros es: %d\n", suma(numeros));
-    printf("El promedio de los 10 numeros es: %0.5f\n", promedio(numeros));
+    leer_filas(matriz_1);
+
+    imprimir_columnas(matriz_1);
 
     // Ejercicio 9.6
-    int matriz[filas_m][filas_m];
-    int num = 1;
+    int matriz_2[filas_m][filas_m];
 
-    for(i = 0; i < filas_m; i++)
-    {
-        for(j = 0; j < filas_m; j++)
-        {
-            printf("Ingrese el valor %d %d de la matriz: ", i + 1, j + 1);
-            scanf("%d", &matriz[i][j]);
-        }
-    }
+    generar_matriz(matriz_2);
 
-    imprimir_matriz(matriz);
+    imprimir_matriz(matriz_2);
 
-    printf("El valor de la suma de la matriz sin la diagonal es: %d", suma_matriz(matriz));
+    printf("El valor de la suma de la matriz sin la diagonal es: %d", suma_matriz(matriz_2));
 }
