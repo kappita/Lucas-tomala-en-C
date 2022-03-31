@@ -32,4 +32,7 @@ int main(int argc, char *argv[])
     FILE *fp_s = abrir_archivo(argv[3], "w");
 
     escribir_imprimir_archivo(fp_e, fp_s);
+
+    fclose(fp_e);
+    fclose(fp_s);
 }

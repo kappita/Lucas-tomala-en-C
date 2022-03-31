@@ -33,4 +33,6 @@ int main(int argc, char *argv[])
     FILE *fp = abrir_archivo(argv[2], "r");
 
     imprimir_con_formato(fp);
+
+    fclose(fp);
 }
