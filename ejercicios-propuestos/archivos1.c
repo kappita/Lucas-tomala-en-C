@@ -33,4 +33,6 @@ int main(int argc, char *argv[])
     fp = abrir_archivo(argv[2], "r");
 
     fclose(fp);
+
+    return 0;
 }

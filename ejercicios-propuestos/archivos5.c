@@ -41,4 +41,6 @@ int main(int argc, char *argv[])
     escribir_archivo(fp_s);
     
     fclose(fp_s);
+
+    return 0;
 }

@@ -35,4 +35,6 @@ int main(int argc, char *argv[])
     imprimir_con_formato(fp);
 
     fclose(fp);
+
+    return 0;
 }

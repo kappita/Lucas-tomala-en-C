@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// variable generales
+// variable generales para iterar
 int i;
 int j;
 
@@ -55,7 +55,8 @@ void generar_matriz(int *A)
         for(j = 0; j < (filas_m); j++)
         {
             printf("Ingrese el valor %d %d de la matriz: ", i + 1, j + 1);
-            scanf("%d", &A[i][j]); 
+            scanf("%d", A);
+            A++;
         }        
     }
 }
@@ -100,13 +101,13 @@ int suma_matriz(int A[filas_m][filas_m])
 }
 
 // ejercicio 9.6 dinamico
-int **crear_matriz_dinam(int **A, int n)
+int **crear_matriz_dinam(int n)
 {
-    A = malloc(sizeof(int *) * n);
+    int **A = (int **)malloc(sizeof(int *) * n);
     
     for(i = 0; i < n; i++)
     {
-        A[i] = malloc(sizeof(int) * n);
+        A[i] = (int *)malloc(sizeof(int) * n);
     }
 
     for(i = 0; i < n; i++)
@@ -121,16 +122,16 @@ int **crear_matriz_dinam(int **A, int n)
     return A;
 }
 
-void imprimir_matriz_dim(int **A)
+void imprimir_matriz_dim(int **A, int n)
 {
     printf("La matriz es: \n");
 
-    for(i = 0; i < filas_m; i++)
+    for(i = 0; i < n; i++)
     {
         printf("(");
-        for(j = 0; j < filas_m; j++)
+        for(j = 0; j < n; j++)
         {
-            if( ((j+1) % filas_m) == 0)
+            if( ((j+1) % n) == 0)
             {
                 printf("%d)\n", A[i][j]);
             }
@@ -142,13 +143,13 @@ void imprimir_matriz_dim(int **A)
     }
 }
 
-int suma_matriz_dim(int **A)
+int suma_matriz_dim(int **A, int n)
 {
     int total_m = 0;
 
-    for(i = 0; i < filas_m; i++)
+    for(i = 0; i < n; i++)
     {
-        for(j = 0; j < filas_m; j++)
+        for(j = 0; j < n; j++)
         {
             if(j != i)
             {
@@ -177,7 +178,7 @@ int main()
 
     imprimir_matriz(matriz_2);
 
-    printf("El valor de la suma de la matriz sin la diagonal es: %d", suma_matriz(matriz_2));
+    printf("El valor de la suma de la matriz sin la diagonal es: %d\n", suma_matriz(matriz_2));
 
     // ejercicio 9.6 dinamico
     int **matriz_dim, n;
@@ -185,9 +186,11 @@ int main()
     printf("Ingrese el largo de la matriz: ");
     scanf("%d", &n);
 
-    matriz_dim = crear_matriz_dinam(matriz_dim, n);
+    matriz_dim = crear_matriz_dinam(n);
 
-    imprimir_matriz_dim(matriz_dim);
+    imprimir_matriz_dim(matriz_dim, n);
 
-    printf("El valor de la suma de la matriz sin la diagonal es: %d", suma_matriz_dim(matriz_dim));
+    printf("El valor de la suma de la matriz sin la diagonal es: %d\n", suma_matriz_dim(matriz_dim, n));
+
+    return 0;
 }

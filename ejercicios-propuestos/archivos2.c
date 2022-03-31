@@ -34,4 +34,6 @@ int main(int argc, char *argv[])
     mostrar_contenido_archivo(fp);
 
     fclose(fp);
+
+    return 0;
 }
