@@ -10,7 +10,7 @@ Pila *crear_pila()
     return p;
 }
 
-Nodop *crear_nodo(int valor1, int valor2)
+Nodop *crear_nodoP(int valor1, int valor2)
 {
     Nodop *n;
     n = (Nodop*)malloc(sizeof(Nodop));
@@ -20,7 +20,7 @@ Nodop *crear_nodo(int valor1, int valor2)
     return n;
 }
 
-int isEmpty(Pila *p)
+int isEmptyP(Pila *p)
 {
     if(p -> tope == NULL)
     {
@@ -32,8 +32,8 @@ int isEmpty(Pila *p)
 void push(Pila *p, int valor1, int valor2)
 {
     Nodop *n;
-    n = crear_nodo(valor1, valor2);
-    if(isEmpty(p) == 1)
+    n = crear_nodoP(valor1, valor2);
+    if(isEmptyP(p) == 1)
     {
         p -> tope = n;
     }
@@ -47,7 +47,7 @@ void push(Pila *p, int valor1, int valor2)
 int *pop(Pila *p)
 {
     int *popeado = (int*)malloc(sizeof(int) * 2);
-    if(isEmpty(p) == 1)
+    if(isEmptyP(p) == 1)
     {
         printf("Pila vacia\n");
         return 0;

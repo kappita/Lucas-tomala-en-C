@@ -81,23 +81,23 @@ int *encontrar_entrada(char **matriz, int alto, int largo)
     return pos;
 }
 
-int verificar_mov(char **matriz, int pos[2])
+int verificar_mov(char **matriz, int x, int y)
 {
     int movimientos = 0;
 
-    if(matriz[pos[0] + 1][pos[1]])
+    if(matriz[x + 1][y] == 'o' || matriz[x + 1][y] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[pos[0]][pos[1] + 1])
+    else if(matriz[x][y + 1] == 'o' || matriz[x][y + 1] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[pos[0] - 1][pos[1]])
+    else if(matriz[x - 1][y] == 'o' || matriz[x - 1][y] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[pos[0]][pos[1] - 1])
+    else if(matriz[x][y - 1] == 'o' || matriz[x][y - 1] == 's')
     {
         movimientos += 1;
     }
@@ -105,55 +105,92 @@ int verificar_mov(char **matriz, int pos[2])
     return movimientos;
 }
 
-Lista *movimientos(char **matriz, int pos[2])
+Lista *movimientos(char **matriz, int *pos)
 {
     Lista *l = crear_lista();
+    Nodol *aux;
+    Nodop *sepa;
     Pila *bifurca = crear_pila();
-    int movimientos;
-    int x = pos[0], y = pos[1];
-
-    movimientos = verificar_mov(matriz, pos);
+    int movimientos, sepa1, sepa2;
+    int x = pos[0], y = pos[1], cont = 1;
+    
+    movimientos = verificar_mov(matriz, x, y);
     if(movimientos == 0)
     {
         return l;
     }
     else if(movimientos > 1)
     {
-        push(bifurca, pos[0], pos[1]);
+        push(bifurca, x, y);
+        sepa = bifurca -> tope;
+        sepa1 = sepa -> valor1;
+        sepa2 = sepa -> valor2;
     }
+    insertar_final(l, x, y);
     while(movimientos >= 0)
-        if(matriz[x + 1][y] == 'o')
+    {
+        printf("(%d,%d)\n", x, y);
+        if(matriz[x][y + 1] == 'o')
         {
-            pos[0] += 1;
+            matriz[x][y + 1] = 'x';
+            y += 1;
+            insertar_final(l, x, y);
         }
-        else if(matriz[x][y + 1] == 'o')
+        else if(matriz[x + 1][y] == 'o')
         {
-            pos[1] += 1;
-        }
-        else if(matriz[x - 1][y] == 'o')
-        {
-            pos[0] -= 1;
+            matriz[x + 1][y] = 'x';
+            x += 1;
+            insertar_final(l, x, y);
         }
         else if(matriz[x][y - 1] == 'o')
         {
-            pos[1] -= 1;
+            matriz[x][y - 1] = 'x';
+            y -= 1;
+            insertar_final(l, x, y);
         }
-        movimientos = verificar_mov(matriz, pos);
+        else if(matriz[x - 1][y] == 'o')
+        {
+            matriz[x - 1][y] = 'x';
+            x -= 1;
+            insertar_final(l, x, y);
+        }
+        else if(bifurca -> tope == NULL || matriz[x][y] == 's')
+        {
+            return l;
+        }
+        // SECTOR MALO
+        // se deberia hacer pop a la bifurcacion si es que no se puede mover desde el ultimo punto
+        /*
+        movimientos = verificar_mov(matriz, x, y);
         if(movimientos == 0 || isEmptyP(bifurca) == 0)
         {
-            pos[0] = bifurca -> tope ->valor1;
-            pos[1] = bifurca -> tope ->valor2;
-            while()
+            x = sepa1;
+            y = sepa2;
+            aux = l -> inicio;
+            while(aux -> valor1 != x && aux -> valor2 != y)
+            {
+                aux = aux -> next;
+                cont += 1;
+            }
+            while(aux -> next != NULL)
+            {
+                eliminar_pos(l, cont);
+            }
         }
         else if(movimientos > 1)
         {
-            push(bifurca, pos[0], pos[1]);
+            push(bifurca, x, y);
         }
-        else if(isEmptyP(bifurca) == 1)
+        movimientos = verificar_mov(matriz, sepa1, sepa2);
+        if(movimientos == 0)
         {
             pop(bifurca);
+            sepa = bifurca -> tope;
+            sepa1 = sepa -> valor1;
+            sepa2 = sepa -> valor2;
         }
-    return l;
+        */
+    }
 }
 
 int main(int argc, char *argv[])
@@ -175,12 +212,15 @@ int main(int argc, char *argv[])
     
     matriz = cargar_laberinto(arch, &alto, &largo);
     pos_entrada = encontrar_entrada(matriz, alto, largo);
-    l = moverse(matriz, pos_entrada);
+    l = movimientos(matriz, pos_entrada);
 
-    if(l != NULL)
+    if(l -> inicio == NULL || l -> inicio -> valor1 == -1)
+    {
+        printf("El laberinto no tiene solucion");
+    }
+    else
     {
         printf("Hay salida y el recorrido es:\n");
-
         for(i = 0; i < alto; i++)
         {
             for(j = 0; j < largo; j++)
@@ -189,10 +229,8 @@ int main(int argc, char *argv[])
             }
             printf("\n");
         }
-    }
-    else
-    {
-        printf("El laberinto no tiene solucion");
+        printf("%d, %d\n", valor_pos(l, 2)[0], valor_pos(l, 2)[1]);
+        printf("%d", l -> largo);
     }
     
     return 0;
