@@ -114,7 +114,7 @@ Lista *movimientos(char **matriz, int *pos)
     int *pos_aux = (int*)malloc(sizeof(int) * 2);
     int *sepa = (int*)malloc(sizeof(int) * 2);
     pos_aux[0] = pos[0], pos_aux[1] = pos[1];
-    
+    // contea de manera erronea
     movimientos = verificar_mov(matriz, pos);
     printf("movs: %d\n", movimientos);
     if(movimientos == 0)
@@ -130,6 +130,7 @@ Lista *movimientos(char **matriz, int *pos)
     insertar_final(l, pos[0], pos[1]);
     while(movimientos >= 0)
     {
+        // Se cae al intentar bajar
         printf("(%d,%d)\n", pos_aux[0], pos_aux[1]);
         if(matriz[pos_aux[0]][pos_aux[1] + 1] == 'o')
         {
