@@ -7,16 +7,18 @@ Lista *crear_lista()
     Lista *l;
     l = (Lista*)malloc(sizeof(Lista));
     l -> inicio = NULL;
-    l -> largo = -1;
+    l -> largo = 0;
     return l;
 }
 
-Nodol *crear_nodo(int valor1, int valor2)
+Nodol *crear_nodo(int *valor)
 {
     Nodol *n;
+    int *valor_aux = (int*)malloc(sizeof(int) * 2);
+    valor_aux[0] = valor[0]; valor_aux[1] = valor[1];
     n = (Nodol*)malloc(sizeof(Nodol));
-    n -> valor1 = valor1;
-    n -> valor2 = valor2;
+    n -> valor1 = valor_aux[0];
+    n -> valor2 = valor_aux[1];
     n -> next = NULL;
     return n;
 }
@@ -30,10 +32,10 @@ int isEmptyL(Lista *l)
     return 0;
 }
 
-void insertar_inicio(Lista *l, int valor1, int valor2)
+void insertar_inicio(Lista *l, int *valor)
 {
     Nodol *n;
-    n = crear_nodo(valor1, valor2);
+    n = crear_nodo(valor);
     if(isEmptyL(l) == 1)
     {
         l -> inicio = n;
@@ -46,10 +48,10 @@ void insertar_inicio(Lista *l, int valor1, int valor2)
     l -> largo += 1;
 }
 
-void insertar_final(Lista *l, int valor1, int valor2)
+void insertar_final(Lista *l, int *valor)
 {
     Nodol *n;
-    n = crear_nodo(valor1, valor2);
+    n = crear_nodo(valor);
     if(isEmptyL(l) == 1)
     {
         l -> inicio = n;
@@ -66,10 +68,10 @@ void insertar_final(Lista *l, int valor1, int valor2)
     l -> largo += 1;
 }
 
-void insertar_pos(Lista *l, int pos, int valor1, int valor2)
+void insertar_pos(Lista *l, int pos, int *valor)
 {
     Nodol *n, *aux1, *aux2;
-    n = crear_nodo(valor1, valor2);
+    n = crear_nodo(valor);
     if(isEmptyL(l) == 1)
     {
         l -> inicio = n;
@@ -84,7 +86,7 @@ void insertar_pos(Lista *l, int pos, int valor1, int valor2)
         }
         else if(pos == 0)
         {
-            insertar_inicio(l, valor1, valor2);
+            insertar_inicio(l, valor);
             l -> largo += 1;
         }
         else

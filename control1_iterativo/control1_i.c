@@ -83,26 +83,28 @@ int *encontrar_entrada(char **matriz, int alto, int largo)
 
 int verificar_mov(char **matriz, int *pos)
 {
-    int movimientos = 0;
+    int movimiento = 0;
 
-    if(matriz[pos[0] + 1][pos[1]] == 'o' || matriz[pos[0] + 1][pos[1]] == 's')
+    if(matriz[pos[0]][pos[1] + 1] == 'o')
     {
-        movimientos += 1;
+        movimiento += 1;
     }
-    else if(matriz[pos[0]][pos[1] + 1] == 'o' || matriz[pos[0]][pos[1] + 1] == 's')
+    if(matriz[pos[0] + 1][pos[1]] == 'o')
     {
-        movimientos += 1;
+        movimiento += 1;
     }
-    else if(matriz[pos[0] - 1][pos[1]] == 'o' || matriz[pos[0] - 1][pos[1]] == 's')
+    if(matriz[pos[0]][pos[1] - 1] == 'o' && pos[1] != 0)
     {
-        movimientos += 1;
+        movimiento += 1;
     }
-    else if(matriz[pos[0]][pos[1] - 1] == 'o' || matriz[pos[0]][pos[1] - 1] == 's')
+    if(pos[0] != 0)
     {
-        movimientos += 1;
+        if(matriz[pos[0] - 1][pos[1]] == 'o')
+        {
+            movimiento += 1;
+        }
     }
-
-    return movimientos;
+    return movimiento;
 }
 
 Lista *movimientos(char **matriz, int *pos)
@@ -113,76 +115,101 @@ Lista *movimientos(char **matriz, int *pos)
     int movimientos, mov_aux, cont = 1;
     int *pos_aux = (int*)malloc(sizeof(int) * 2);
     int *sepa = (int*)malloc(sizeof(int) * 2);
-    pos_aux[0] = pos[0], pos_aux[1] = pos[1];
-    // contea de manera erronea
+    int *bif = (int*)malloc(sizeof(int) * 2);
+
+    pos_aux[0] = pos[0]; pos_aux[1] = pos[1];
     movimientos = verificar_mov(matriz, pos);
-    printf("movs: %d\n", movimientos);
     if(movimientos == 0)
     {
         return l;
     }
     else if(movimientos > 1)
     {
+        printf("comienzo\n");
         push(bifurca, pos);
-        printf("PUSHEO");
+        printf("PUSHEO ENTRADA\n");
         sepa = tope(bifurca);
     }
-    insertar_final(l, pos[0], pos[1]);
+    insertar_final(l, pos);
     while(movimientos >= 0)
     {
-        // Se cae al intentar bajar
         printf("(%d,%d)\n", pos_aux[0], pos_aux[1]);
         if(matriz[pos_aux[0]][pos_aux[1] + 1] == 'o')
         {
             matriz[pos_aux[0]][pos[1] + 1] = 'x';
             pos_aux[1] += 1;
-            insertar_final(l, pos_aux[0], pos_aux[1]);
+            insertar_final(l, pos_aux);
         }
         else if(matriz[pos_aux[0] + 1][pos_aux[1]] == 'o')
         {
             matriz[pos_aux[0] + 1][pos_aux[1]] = 'x';
             pos[0] += 1;
-            insertar_final(l, pos_aux[0], pos_aux[1]);
+            insertar_final(l, pos_aux);
         }
         else if(matriz[pos_aux[0]][pos_aux[1] - 1] == 'o')
         {
             matriz[pos_aux[0]][pos_aux[1] - 1] = 'x';
             pos[1] -= 1;
-            insertar_final(l, pos_aux[0], pos_aux[1]);
+            insertar_final(l, pos_aux);
         }
         else if(matriz[pos_aux[0] - 1][pos_aux[1]] == 'o')
         {
             matriz[pos_aux[0] - 1][pos_aux[1]] = 'x';
             pos_aux[0] -= 1;
-            insertar_final(l, pos_aux[0], pos_aux[1]);
+            insertar_final(l, pos_aux);
         }
-        else if(isEmptyP(bifurca) == 1 || matriz[pos[0]][pos[1]] == 's')
+        else if(isEmptyP(bifurca) == 1 || matriz[pos_aux[0]][pos_aux[1] + 1] == 's')
         {
             return l;
         }
+        else if(isEmptyP(bifurca) == 1 || matriz[pos_aux[0] + 1][pos_aux[1]] == 's')
+        {
+            return l;
+        }
+        if(isEmptyP(bifurca) == 1 || matriz[pos_aux[0]][pos_aux[1] - 1] == 's')
+        {
+            return l;
+        }
+        else if(pos_aux[0] != 0)
+        {
+            if(isEmptyP(bifurca) == 1 || matriz[pos_aux[0] - 1][pos_aux[1]] == 's')
+            {
+                return l;
+            }
+        }
         // SECTOR MALO
         // se deberia hacer pop a la bifurcacion si es que no se puede mover desde el ultimo punto
-        // mov_aux = verificar_mov(matriz, pos_aux);
-        // printf("%d, %d\n", sepa[0], sepa[1]);
-        // if(mov_aux == 0)
-        // {
-        //     printf("POPEO");
-        //     pop(bifurca);
-        //     while
-        // }
-        // else if(mov_aux > 1)
-        // {
-        //     printf("PUSHEO");
-        //     push(bifurca, pos_aux);
-        //     sepa[0] = pos_aux[0];
-        //     sepa[1] = pos_aux[1];
-        // }
-        // else if(mov_aux >= 1 && verificar_mov(matriz, pos_aux) == 0)
-        // {
-        //     printf("REGRESO");
-        //     pos[0] = pos_aux[0];
-        //     pos[1] = pos_aux[1];
-        // }
+        mov_aux = verificar_mov(matriz, pos_aux);
+        movimientos = verificar_mov(matriz, pos_aux);
+        printf("movs: %d\n", mov_aux);
+        if(mov_aux >= 1 && movimientos == 0)
+        {
+            printf("REGRESO\n");
+            pos[0] = pos_aux[0];
+            pos[1] = pos_aux[1];
+        }
+        else if(mov_aux == 0)
+        {
+            printf("POPEO\n");
+            bif = pop(bifurca);
+            aux = l -> inicio;
+            while(aux -> valor1 != bif[0] && aux -> valor2 != bif [1])
+            {
+                aux = aux -> next;
+                cont += 1;
+            }
+            while(aux -> next != NULL)
+            {
+                eliminar_pos(l, cont);
+            }
+        }
+        else if(mov_aux > 1)
+        {
+            printf("PUSHEO\n");
+            push(bifurca, pos_aux);
+            sepa[0] = pos_aux[0];
+            sepa[1] = pos_aux[1];
+        }
     }
 }
 

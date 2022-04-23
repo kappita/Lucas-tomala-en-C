@@ -13,9 +13,11 @@ Pila *crear_pila()
 Nodop *crear_nodoP(int *valor)
 {
     Nodop *n;
+    int *valor_aux = (int*)malloc(sizeof(int) * 2);
+    valor_aux[0] = valor[0]; valor_aux[1] = valor[1]; 
     n = (Nodop*)malloc(sizeof(Nodop));
-    n -> valor1 = valor[0];
-    n -> valor2 = valor[1];
+    n -> valor1 = valor_aux[0];
+    n -> valor2 = valor_aux[1];
     n -> next = NULL;
     return n;
 }
