@@ -11,9 +11,9 @@ typedef struct pila
 }Pila;
 
 Pila *crear_pila();
-Nodop *crear_nodoP(int valor1, int valor2);
+Nodop *crear_nodoP(int *valor);
 int isEmptyP(Pila *p);
-void push(Pila *p, int valor1, int valor2);
+void push(Pila *p, int *valor);
 int *pop(Pila *p);
 int *tope(Pila *p);
 void destruirPila(Pila *p);

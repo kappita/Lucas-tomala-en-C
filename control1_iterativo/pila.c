@@ -10,12 +10,12 @@ Pila *crear_pila()
     return p;
 }
 
-Nodop *crear_nodoP(int valor1, int valor2)
+Nodop *crear_nodoP(int *valor)
 {
     Nodop *n;
     n = (Nodop*)malloc(sizeof(Nodop));
-    n -> valor1 = valor1;
-    n -> valor2 = valor2;
+    n -> valor1 = valor[0];
+    n -> valor2 = valor[1];
     n -> next = NULL;
     return n;
 }
@@ -29,10 +29,11 @@ int isEmptyP(Pila *p)
     return 0;
 }
 
-void push(Pila *p, int valor1, int valor2)
+void push(Pila *p, int *valor)
 {
     Nodop *n;
-    n = crear_nodoP(valor1, valor2);
+    n = crear_nodoP(valor);
+    printf("%d, %d\n", n -> valor1, n -> valor2);
     if(isEmptyP(p) == 1)
     {
         p -> tope = n;
@@ -64,8 +65,9 @@ int *pop(Pila *p)
 int *tope(Pila *p)
 {
     int *tope_p = (int*)malloc(sizeof(int) * 2);
-    tope_p[0] = p -> tope -> valor1;
-    tope_p[1] = p -> tope -> valor2;
+    Nodop *aux = p -> tope;
+    tope_p[0] = aux -> valor1;
+    tope_p[1] = aux -> valor2;
     return tope_p;
 }
 

@@ -7,7 +7,7 @@
 int i;
 int j;
 
-// funcion que abre el archivo y verifica si fue abierto corretamente
+// funcion que abre el archivo pos[1] verifica si fue abierto corretamente
 FILE *abrir_archivo(char *nombre_archivo, char *modo)
 {
     FILE *arch = fopen(nombre_archivo, modo);
@@ -15,7 +15,7 @@ FILE *abrir_archivo(char *nombre_archivo, char *modo)
     // se verifica si se abre
     if(arch == NULL)
     {
-        printf("Nombre incorrecto o el archivo no existe\n");
+        printf("Nombre incorrecto o el archivo no epos[0]iste\n");
         return NULL;
     }
 
@@ -23,8 +23,8 @@ FILE *abrir_archivo(char *nombre_archivo, char *modo)
     return arch;
 }
 
-// funcion que lee el archivo y lo guarda en una matriz char
-// a su vez guarda los valores del largo y el alto para usarlos en el main
+// funcion que lee el archivo pos[1] lo guarda en una matriz char
+// a su vez guarda los valores del largo pos[1] el alto para usarlos en el main
 char **cargar_laberinto(FILE *arch , int *a, int *b)
 {
     char **matriz;
@@ -44,7 +44,7 @@ char **cargar_laberinto(FILE *arch , int *a, int *b)
         getc(arch);
         for(j = 0; j <= largo; j++)
         {
-            // se le agregan una columna y una fila al final para evitar
+            // se le agregan una columna pos[1] una fila al final para evitar
             // errores con los indices despues
             if(j == largo || i == alto)
             {
@@ -81,23 +81,23 @@ int *encontrar_entrada(char **matriz, int alto, int largo)
     return pos;
 }
 
-int verificar_mov(char **matriz, int x, int y)
+int verificar_mov(char **matriz, int *pos)
 {
     int movimientos = 0;
 
-    if(matriz[x + 1][y] == 'o' || matriz[x + 1][y] == 's')
+    if(matriz[pos[0] + 1][pos[1]] == 'o' || matriz[pos[0] + 1][pos[1]] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[x][y + 1] == 'o' || matriz[x][y + 1] == 's')
+    else if(matriz[pos[0]][pos[1] + 1] == 'o' || matriz[pos[0]][pos[1] + 1] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[x - 1][y] == 'o' || matriz[x - 1][y] == 's')
+    else if(matriz[pos[0] - 1][pos[1]] == 'o' || matriz[pos[0] - 1][pos[1]] == 's')
     {
         movimientos += 1;
     }
-    else if(matriz[x][y - 1] == 'o' || matriz[x][y - 1] == 's')
+    else if(matriz[pos[0]][pos[1] - 1] == 'o' || matriz[pos[0]][pos[1] - 1] == 's')
     {
         movimientos += 1;
     }
@@ -109,87 +109,79 @@ Lista *movimientos(char **matriz, int *pos)
 {
     Lista *l = crear_lista();
     Nodol *aux;
-    Nodop *sepa;
     Pila *bifurca = crear_pila();
-    int movimientos, sepa1, sepa2;
-    int x = pos[0], y = pos[1], cont = 1;
+    int movimientos, mov_aux, cont = 1;
+    int *pos_aux = (int*)malloc(sizeof(int) * 2);
+    int *sepa = (int*)malloc(sizeof(int) * 2);
+    pos_aux[0] = pos[0], pos_aux[1] = pos[1];
     
-    movimientos = verificar_mov(matriz, x, y);
+    movimientos = verificar_mov(matriz, pos);
+    printf("movs: %d\n", movimientos);
     if(movimientos == 0)
     {
         return l;
     }
     else if(movimientos > 1)
     {
-        push(bifurca, x, y);
-        sepa = bifurca -> tope;
-        sepa1 = sepa -> valor1;
-        sepa2 = sepa -> valor2;
+        push(bifurca, pos);
+        printf("PUSHEO");
+        sepa = tope(bifurca);
     }
-    insertar_final(l, x, y);
+    insertar_final(l, pos[0], pos[1]);
     while(movimientos >= 0)
     {
-        printf("(%d,%d)\n", x, y);
-        if(matriz[x][y + 1] == 'o')
+        printf("(%d,%d)\n", pos_aux[0], pos_aux[1]);
+        if(matriz[pos_aux[0]][pos_aux[1] + 1] == 'o')
         {
-            matriz[x][y + 1] = 'x';
-            y += 1;
-            insertar_final(l, x, y);
+            matriz[pos_aux[0]][pos[1] + 1] = 'x';
+            pos_aux[1] += 1;
+            insertar_final(l, pos_aux[0], pos_aux[1]);
         }
-        else if(matriz[x + 1][y] == 'o')
+        else if(matriz[pos_aux[0] + 1][pos_aux[1]] == 'o')
         {
-            matriz[x + 1][y] = 'x';
-            x += 1;
-            insertar_final(l, x, y);
+            matriz[pos_aux[0] + 1][pos_aux[1]] = 'x';
+            pos[0] += 1;
+            insertar_final(l, pos_aux[0], pos_aux[1]);
         }
-        else if(matriz[x][y - 1] == 'o')
+        else if(matriz[pos_aux[0]][pos_aux[1] - 1] == 'o')
         {
-            matriz[x][y - 1] = 'x';
-            y -= 1;
-            insertar_final(l, x, y);
+            matriz[pos_aux[0]][pos_aux[1] - 1] = 'x';
+            pos[1] -= 1;
+            insertar_final(l, pos_aux[0], pos_aux[1]);
         }
-        else if(matriz[x - 1][y] == 'o')
+        else if(matriz[pos_aux[0] - 1][pos_aux[1]] == 'o')
         {
-            matriz[x - 1][y] = 'x';
-            x -= 1;
-            insertar_final(l, x, y);
+            matriz[pos_aux[0] - 1][pos_aux[1]] = 'x';
+            pos_aux[0] -= 1;
+            insertar_final(l, pos_aux[0], pos_aux[1]);
         }
-        else if(bifurca -> tope == NULL || matriz[x][y] == 's')
+        else if(isEmptyP(bifurca) == 1 || matriz[pos[0]][pos[1]] == 's')
         {
             return l;
         }
         // SECTOR MALO
         // se deberia hacer pop a la bifurcacion si es que no se puede mover desde el ultimo punto
-        /*
-        movimientos = verificar_mov(matriz, x, y);
-        if(movimientos == 0 || isEmptyP(bifurca) == 0)
-        {
-            x = sepa1;
-            y = sepa2;
-            aux = l -> inicio;
-            while(aux -> valor1 != x && aux -> valor2 != y)
-            {
-                aux = aux -> next;
-                cont += 1;
-            }
-            while(aux -> next != NULL)
-            {
-                eliminar_pos(l, cont);
-            }
-        }
-        else if(movimientos > 1)
-        {
-            push(bifurca, x, y);
-        }
-        movimientos = verificar_mov(matriz, sepa1, sepa2);
-        if(movimientos == 0)
-        {
-            pop(bifurca);
-            sepa = bifurca -> tope;
-            sepa1 = sepa -> valor1;
-            sepa2 = sepa -> valor2;
-        }
-        */
+        // mov_aux = verificar_mov(matriz, pos_aux);
+        // printf("%d, %d\n", sepa[0], sepa[1]);
+        // if(mov_aux == 0)
+        // {
+        //     printf("POPEO");
+        //     pop(bifurca);
+        //     while
+        // }
+        // else if(mov_aux > 1)
+        // {
+        //     printf("PUSHEO");
+        //     push(bifurca, pos_aux);
+        //     sepa[0] = pos_aux[0];
+        //     sepa[1] = pos_aux[1];
+        // }
+        // else if(mov_aux >= 1 && verificar_mov(matriz, pos_aux) == 0)
+        // {
+        //     printf("REGRESO");
+        //     pos[0] = pos_aux[0];
+        //     pos[1] = pos_aux[1];
+        // }
     }
 }
 
@@ -204,7 +196,7 @@ int main(int argc, char *argv[])
 
     arch = abrir_archivo(argv[2], "r");
 
-    // en caso de no existir el archivo se termina el programa
+    // en caso de no epos[0]istir el archivo se termina el programa
     if(arch == NULL)
     {
         return 0;
